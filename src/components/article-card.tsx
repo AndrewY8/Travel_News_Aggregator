@@ -71,9 +71,9 @@ export function ArticleCard({ article }: { article: Article }) {
           </h3>
         </CardHeader>
         <CardContent className="pt-0">
-          {article.description && (
+          {article.summary && (
             <p className="text-sm text-muted-foreground line-clamp-3">
-              {article.description}
+              {article.summary}
             </p>
           )}
           {article.author && (
