@@ -126,7 +126,7 @@ const BONUS_KEYWORDS = [
   "credit card offer",
 ];
 
-export function categorizeArticle(title: string): "Airline" | "Hotel" | "Bonus" | "General" {
+export function categorizeArticle(title: string): "Airline" | "Hotel" | "Travel Bonus" | "General" {
   const lower = title.toLowerCase();
 
   let airlineScore = 0;
@@ -146,7 +146,7 @@ export function categorizeArticle(title: string): "Airline" | "Hotel" | "Bonus" 
   }
 
   // Bonus takes priority if it scores — these are the most actionable articles
-  if (bonusScore > 0) return "Bonus";
+  if (bonusScore > 0) return "Travel Bonus";
   if (airlineScore === 0 && hotelScore === 0) return "General";
   if (airlineScore >= hotelScore) return "Airline";
   return "Hotel";
