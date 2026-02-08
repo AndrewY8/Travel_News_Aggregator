@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import type { Article, FeedResponse } from "@/lib/types";
 
 const SOURCES = ["All", "The Points Guy", "Skift", "One Mile at a Time"];
-const CATEGORIES = ["All", "Airline", "Hotel", "General"];
+const CATEGORIES = ["All", "Airline", "Hotel", "Bonus", "General"];
 
 function groupByDay(articles: Article[]): Map<string, Article[]> {
   const groups = new Map<string, Article[]>();

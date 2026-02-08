@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 const CATEGORY_COLORS: Record<string, string> = {
   Airline: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
   Hotel: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+  Bonus: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
   General: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200",
 };
 
