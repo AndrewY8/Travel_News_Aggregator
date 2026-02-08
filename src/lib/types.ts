@@ -5,7 +5,7 @@ export interface Article {
   url: string;
   source: string;
   author: string | null;
-  description: string | null;
+  summary: string | null;
   imageUrl: string | null;
   category: string;
   publishedAt: string;

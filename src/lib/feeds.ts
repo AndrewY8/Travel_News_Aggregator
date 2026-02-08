@@ -82,22 +82,19 @@ function extractImageUrl(item: CustomItem): string | null {
   return null;
 }
 
-function extractDescription(item: CustomItem): string {
-  // Prefer contentSnippet (plain text) over encoded content
+export function extractSnippet(item: CustomItem): string {
   const snippet =
     item.contentSnippet || item["content:encodedSnippet"] || "";
   if (snippet) {
-    // Trim to ~300 chars for card display
-    return snippet.length > 300
-      ? snippet.slice(0, 297) + "..."
+    return snippet.length > 500
+      ? snippet.slice(0, 497) + "..."
       : snippet;
   }
 
-  // Strip HTML from description if needed
   const desc = item.content || item["content:encoded"] || "";
   const stripped = desc.replace(/<[^>]*>/g, "").trim();
-  return stripped.length > 300
-    ? stripped.slice(0, 297) + "..."
+  return stripped.length > 500
+    ? stripped.slice(0, 497) + "..."
     : stripped;
 }
 
@@ -106,33 +103,40 @@ function buildGuid(item: CustomItem, source: string): string {
   return item.guid || `${source}::${item.link}`;
 }
 
+export interface ArticleWithSnippet {
+  article: NewArticle;
+  snippet: string;
+}
+
 export async function fetchAndNormalizeFeed(
   source: FeedSource
-): Promise<NewArticle[]> {
+): Promise<ArticleWithSnippet[]> {
   const feed = await parser.parseURL(source.url);
 
   return feed.items.map((item) => ({
-    guid: buildGuid(item, source.name),
-    title: item.title?.trim() || "Untitled",
-    url: item.link || "",
-    source: source.name,
-    author: item.creator || item.author || null,
-    description: extractDescription(item),
-    imageUrl: extractImageUrl(item),
-    category: categorizeArticle(item.title || ""),
-    publishedAt: parseDate(item.pubDate),
+    article: {
+      guid: buildGuid(item, source.name),
+      title: item.title?.trim() || "Untitled",
+      url: item.link || "",
+      source: source.name,
+      author: item.creator || item.author || null,
+      imageUrl: extractImageUrl(item),
+      category: categorizeArticle(item.title || ""),
+      publishedAt: parseDate(item.pubDate),
+    },
+    snippet: extractSnippet(item),
   }));
 }
 
 export async function fetchAllFeeds(): Promise<{
-  articles: NewArticle[];
+  articles: ArticleWithSnippet[];
   errors: { source: string; error: string }[];
 }> {
   const results = await Promise.allSettled(
     FEED_SOURCES.map((source) => fetchAndNormalizeFeed(source))
   );
 
-  const articles: NewArticle[] = [];
+  const articles: ArticleWithSnippet[] = [];
   const errors: { source: string; error: string }[] = [];
 
   results.forEach((result, i) => {
