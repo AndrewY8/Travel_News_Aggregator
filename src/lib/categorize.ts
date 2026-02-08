@@ -124,10 +124,6 @@ const BONUS_KEYWORDS = [
   "cashback",
   "cash back",
   "credit card offer",
-  "annual fee",
-  "waived",
-  "complimentary",
-  "upgrade offer",
 ];
 
 export function categorizeArticle(title: string): "Airline" | "Hotel" | "Bonus" | "General" {
