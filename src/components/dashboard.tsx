@@ -82,19 +82,9 @@ export function Dashboard() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">
-                Travel News
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Aggregated from top travel sources
-              </p>
-            </div>
-            <div className="text-right text-sm text-muted-foreground">
-              <span>{total} articles</span>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold tracking-tight text-center mb-4">
+            Travel News
+          </h1>
 
           {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-3">
