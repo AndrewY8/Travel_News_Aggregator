@@ -6,10 +6,8 @@ import { ArticleCard } from "./article-card";
 import { ArticleSkeleton } from "./article-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import type { Article, FeedResponse } from "@/lib/types";
 
-const SOURCES = ["All", "The Points Guy", "Skift", "One Mile at a Time"];
 const CATEGORIES = ["All", "Airline", "Hotel", "Travel Bonus", "General"];
 
 function groupByDay(articles: Article[]): Map<string, Article[]> {
@@ -44,9 +42,7 @@ export function Dashboard() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [source, setSource] = useState("All");
   const [category, setCategory] = useState("All");
-  const [total, setTotal] = useState(0);
 
   const fetchArticles = useCallback(async () => {
     setLoading(true);
@@ -54,7 +50,6 @@ export function Dashboard() {
 
     try {
       const params = new URLSearchParams();
-      if (source !== "All") params.set("source", source);
       if (category !== "All") params.set("category", category);
       params.set("limit", "100");
 
@@ -63,13 +58,12 @@ export function Dashboard() {
 
       const data: FeedResponse = await res.json();
       setArticles(data.articles);
-      setTotal(data.total);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load articles");
     } finally {
       setLoading(false);
     }
-  }, [source, category]);
+  }, [category]);
 
   useEffect(() => {
     fetchArticles();
@@ -87,40 +81,18 @@ export function Dashboard() {
           </h1>
 
           {/* Filters */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Source
-              </span>
-              {SOURCES.map((s) => (
-                <Button
-                  key={s}
-                  variant={source === s ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSource(s)}
-                  className="h-7 text-xs"
-                >
-                  {s}
-                </Button>
-              ))}
-            </div>
-            <Separator orientation="vertical" className="hidden sm:block h-6 self-center" />
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Category
-              </span>
-              {CATEGORIES.map((c) => (
-                <Button
-                  key={c}
-                  variant={category === c ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setCategory(c)}
-                  className="h-7 text-xs"
-                >
-                  {c}
-                </Button>
-              ))}
-            </div>
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            {CATEGORIES.map((c) => (
+              <Button
+                key={c}
+                variant={category === c ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCategory(c)}
+                className="h-7 text-xs"
+              >
+                {c}
+              </Button>
+            ))}
           </div>
         </div>
       </header>
